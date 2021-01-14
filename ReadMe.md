@@ -11,5 +11,4 @@ start from 12 Jan 2021
 
 ## 📌Project Dependency
 
-1. vue.js
-2. django
+1. node.js
