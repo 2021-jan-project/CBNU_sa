@@ -1,5 +1,5 @@
 <template>
-  <div :class="themeMode">
+  <div>
     <div class="form-wrapper ">
       <div class="form-box">
         <div class="form-box-connect">
@@ -93,24 +93,6 @@
                   </div>
                 </div>
 
-                <!-- EMAIL -->
-                <div class="form-row">
-                  <div class="form-item">
-                    <div class="form-input">
-                      <label for="join_email">EMAIL</label>
-                      <input
-                        type="email"
-                        id="join_email"
-                        name="join_email"
-                        v-model="formData.joinMail"
-                        @focus="onFocusInput"
-                        @blur="onUnfocusInput"
-                        @keydown.enter.prevent="nextInput"
-                      />
-                    </div>
-                  </div>
-                </div>
-
                 <!-- NAME -->
                 <div class="form-row">
                   <div class="form-item">
@@ -172,7 +154,7 @@
 
                 <div class="form-row">
                   <div class="form-item">
-                    <button class="form-btn">회원가입하기</button>
+                    <button class="form-btn" @click.prevent="onChangeTheme">회원가입하기</button>
                   </div>
                 </div>
 
@@ -206,7 +188,6 @@ export default {
         joinId: "",
         joinPw: "",
         joinPwChk: "",
-        joinMail: "",
         joinName: "",
         joinTel: {
           first: "",
@@ -235,6 +216,7 @@ export default {
     onChangeTheme() {
       this.$store.commit("SETSTYLE", "theme-dark");
       this.themeMode = this.$store.state.theme;
+      this.$router.push();
     },
   },
 };
@@ -244,11 +226,10 @@ export default {
 @each $theme in $themes {
   &.#{map-get($theme, "name")} {
     width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: map-get($map: $theme, $key: "background");
+    background-color: map-get($map: $theme, $key: "content-bg");
 
     .form-wrapper {
       width: 100%;
@@ -259,11 +240,12 @@ export default {
 
       .form-box {
         display: flex;
-        background-color: map-get($theme, "background");
-        box-shadow: map-get($theme, "shadow");
+        background-color: map-get($theme, "content-bg");
+        box-shadow: $box-shadow;
         position: relative;
         box-sizing: border-box;
         border-radius: 12px;
+        margin: 50px;
 
         .form-box-connect {
           background-color: map-get($theme, "color2");
@@ -368,7 +350,7 @@ export default {
                   font-size: 0.75rem;
                   top: -6px;
                   left: 12px;
-                  background-color: map-get($theme, "background");
+                  background-color: map-get($theme, "content-bg");
                   color: map-get($theme, "font");
                 }
 
@@ -407,7 +389,7 @@ export default {
                   font-weight: 700;
                   border: 1.6px solid map-get($theme, "color3");
                   transition: border-color 0.2s ease-in-out;
-                  background: map-get($map: $theme, $key: "background");
+                  background: map-get($map: $theme, $key: "content-bg");
                   color: map-get($map: $theme, $key: "font");
 
                   &:focus {
@@ -487,7 +469,7 @@ export default {
 
                 &:hover {
                   background-color: map-get($theme, "font");
-                  color: map-get($theme, "background");
+                  color: map-get($theme, "content-bg");
                   box-shadow: 0 10px 30px 0px rgba(0, 0, 0, 0.5);
                 }
               }

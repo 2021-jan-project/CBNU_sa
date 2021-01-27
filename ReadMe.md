@@ -2,13 +2,18 @@
 
 start from 12 Jan 2021
 
-## 📝TODO
+## 📝 TODO
 
-- [ ] sign in, sign up
+- [x] sign in, sign up
 - [ ] text board
 - [ ] photo board
 - [ ] video board
 
-## 📌Project Dependency
+## 📌 What you need
 
 1. node.js
+
+## 👩‍💻 What i learned
+
+1. scss, vue.js theming
+   - studied how to handle scss better.
