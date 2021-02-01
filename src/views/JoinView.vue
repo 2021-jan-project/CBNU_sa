@@ -1,11 +1,15 @@
 <template>
-  <div style="margin:0; height:100%;" :class="themeMode">
-    <header-nav></header-nav>
-    <join-form-box></join-form-box>
+  <div style="margin:0; height:100%;display:flex;" :class="themeMode">
+    <side-bar></side-bar>
+    <div style="display:flex; flex-direction:column;width:100%; ">
+      <header-nav></header-nav>
+      <join-form-box></join-form-box>
+    </div>
   </div>
 </template>
 
 <script>
+import SideBar from "../components/SideBar";
 import HeaderNav from "../components/HeaderNav";
 import JoinFormBox from "../components/JoinFormBox";
 
@@ -17,6 +21,7 @@ export default {
   },
   components: {
     HeaderNav,
+    SideBar,
     JoinFormBox,
   },
 };

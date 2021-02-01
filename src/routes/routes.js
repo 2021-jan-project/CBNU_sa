@@ -5,6 +5,8 @@ import MainView from "../views/MainView";
 import LoginView from "../views/LoginView";
 import JoinView from "../views/JoinView";
 
+const path = "http://localhost:8000";
+
 Vue.use(Router);
 
 export default new Router({

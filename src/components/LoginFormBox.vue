@@ -51,8 +51,15 @@
                         @focus="onFocusInput"
                         @blur="onUnfocusInput"
                         @keydown.enter.prevent="nextInput"
+                        @keyup="checkId()"
                         v-model="formData.loginId"
                       />
+                      <div v-if="errors.loginId" class="join-warning">
+                        <font-awesome-icon
+                          :icon="['fas', 'exclamation-circle']"
+                        ></font-awesome-icon>
+                        <div class="warning-bubble">{{ errors.loginId }}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -68,15 +75,24 @@
                         name="login_pw"
                         @focus="onFocusInput"
                         @blur="onUnfocusInput"
+                        @keydown.enter.prevent="onSubmit"
                         v-model="formData.loginPw"
                       />
+                      <div v-if="errors.loginPw" class="join-warning">
+                        <font-awesome-icon
+                          :icon="['fas', 'exclamation-circle']"
+                        ></font-awesome-icon>
+                        <div class="warning-bubble">{{ errors.loginPw }}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-item">
-                    <button class="form-btn">로그인하기</button>
+                    <button type="submit" @click.prevent="onSubmit" class="form-btn">
+                      로그인하기
+                    </button>
                   </div>
                 </div>
 
@@ -97,16 +113,20 @@
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { faComment, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faMinus, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { library as faLibrary } from "@fortawesome/fontawesome-svg-core";
 
-faLibrary.add(faGoogle, faComment, faMinus);
+faLibrary.add(faGoogle, faComment, faMinus, faExclamationCircle);
 
 export default {
   data() {
     return {
       themeMode: this.$store.state.theme,
       formData: {
+        loginId: "",
+        loginPw: "",
+      },
+      errors: {
         loginId: "",
         loginPw: "",
       },
@@ -128,9 +148,52 @@ export default {
     nextInput() {
       event.target.parentElement.parentElement.parentElement.nextElementSibling.children[0].children[0].children[1].focus();
     },
-    onChangeTheme() {
-      this.$store.commit("SETSTYLE", "theme-dark");
-      this.themeMode = this.$store.state.theme;
+    checkRequired() {
+      for (const item in this.formData) {
+        try {
+          if (!this.formData[item]) {
+            throw "빈 칸을 채워주세요";
+          }
+        } catch (error) {
+          this.errors[item] = error;
+        }
+      }
+    },
+    checkId() {
+      const pattern_loginId = /^[a-zA-Z가-힣0-9]{4,20}$/;
+      try {
+        if (!pattern_loginId.test(this.formData.loginId)) {
+          throw "한글, 영어, 숫자로만 이루어진 4~20글자로 입력해주세요";
+        } else {
+          console.log("test :>> ");
+          this.errors.loginId = "";
+        }
+      } catch (error) {
+        this.errors.loginId = error;
+      }
+    },
+    checkPassword() {
+      const pattern_loginPw = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,}$/;
+
+      try {
+        if (!pattern_loginPw.test(this.formData.loginPw)) throw "비밀번호를 확인해주세요";
+        else this.errors.loginPw = "";
+      } catch (error) {
+        this.errors.loginPw = error;
+      }
+    },
+    validate() {
+      this.checkRequired();
+      this.checkId();
+      this.checkPassword();
+    },
+    onSubmit(e) {
+      e.preventDefault();
+
+      this.validate();
+
+      console.log("this.formData.loginId :>> ", this.formData.loginId);
+      console.log("this.formData.loginPw :>> ", this.formData.loginPw);
     },
   },
 };
@@ -324,6 +387,53 @@ export default {
                     -moz-appearance: textfield;
                   }
                 }
+
+                .join-warning {
+                  position: absolute;
+                  height: 43px;
+                  width: 43px;
+                  box-sizing: border-box;
+                  top: 0;
+                  right: 0;
+                  font-size: 20px;
+                  color: map-get($map: $theme, $key: "error");
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  cursor: pointer;
+
+                  &:hover .warning-bubble {
+                    display: block;
+                  }
+
+                  .warning-bubble {
+                    position: absolute;
+                    top: -35px;
+                    background: map-get($map: $theme, $key: "color3");
+                    border-radius: 10px;
+                    font-size: 15px;
+                    padding: 10px 12px;
+                    white-space: nowrap;
+                    color: map-get($map: $theme, $key: "font");
+                    display: none;
+
+                    &::after {
+                      content: "";
+                      position: absolute;
+                      bottom: 0;
+                      right: 50%;
+                      left: 50%;
+                      width: 0;
+                      height: 0;
+                      border: 10px solid transparent;
+                      border-top-color: map-get($map: $theme, $key: "color3");
+                      border-bottom: 0;
+                      margin-left: -10px;
+                      margin-bottom: -10px;
+                    }
+                  }
+                }
+
                 .num-input-wrapper {
                   display: flex;
                   justify-content: space-between;

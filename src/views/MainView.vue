@@ -1,7 +1,7 @@
 <template>
   <div style="margin:0; height:100%;display:flex;" :class="themeMode">
     <side-bar></side-bar>
-    <div style="display:flex; flex-direction:column;width:100%; overflow:hidden;">
+    <div style="display:flex; flex-direction:column;width:100%; ">
       <header-nav></header-nav>
       <join-form-box></join-form-box>
     </div>

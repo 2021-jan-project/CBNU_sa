@@ -48,11 +48,19 @@
                         type="text"
                         id="join_id"
                         name="join_id"
+                        maxlength="20"
                         @focus="onFocusInput"
                         @blur="onUnfocusInput"
                         @keydown.enter.prevent="nextInput"
+                        @keyup="checkId()"
                         v-model="formData.joinId"
                       />
+                      <div v-if="errors.joinId" class="join-warning">
+                        <font-awesome-icon
+                          :icon="['fas', 'exclamation-circle']"
+                        ></font-awesome-icon>
+                        <div class="warning-bubble">{{ errors.joinId }}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -66,11 +74,19 @@
                         type="password"
                         id="join_pw"
                         name="join_pw"
+                        maxlength="20"
                         @focus="onFocusInput"
                         @blur="onUnfocusInput"
                         @keydown.enter.prevent="nextInput"
+                        @keyup="checkPassword()"
                         v-model="formData.joinPw"
                       />
+                      <div v-if="errors.joinPw" class="join-warning">
+                        <font-awesome-icon
+                          :icon="['fas', 'exclamation-circle']"
+                        ></font-awesome-icon>
+                        <div class="warning-bubble">{{ errors.joinPw }}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -82,13 +98,21 @@
                       <label for="join_pw">PW check</label>
                       <input
                         type="password"
-                        id="join_pw"
+                        id="join_pw_chk"
                         name="join_pw"
+                        maxlength="20"
                         @focus="onFocusInput"
-                        @blur="onUnfocusInput"
+                        @blur="onUnfocusInput()"
                         @keydown.enter.prevent="nextInput"
+                        @keyup="checkPasswordCheck()"
                         v-model="formData.joinPwChk"
                       />
+                      <div v-if="errors.joinPwChk" class="join-warning">
+                        <font-awesome-icon
+                          :icon="['fas', 'exclamation-circle']"
+                        ></font-awesome-icon>
+                        <div class="warning-bubble">{{ errors.joinPwChk }}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -102,11 +126,19 @@
                         type="text"
                         id="join_name"
                         name="join_name"
+                        maxlength="20"
                         v-model="formData.joinName"
                         @focus="onFocusInput"
                         @blur="onUnfocusInput"
-                        @keydown.enter.prevent="nextInput"
+                        @keydown.enter.prevent="telInput"
+                        @keyup="checkName()"
                       />
+                      <div v-if="errors.joinName" class="join-warning">
+                        <font-awesome-icon
+                          :icon="['fas', 'exclamation-circle']"
+                        ></font-awesome-icon>
+                        <div class="warning-bubble">{{ errors.joinName }}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -119,33 +151,36 @@
                       <div class="num-input-wrapper">
                         <input
                           type="number"
-                          id="join_tel"
-                          name="join_tel"
+                          name="tel_first"
                           class="num-input"
                           v-model="formData.joinTel.first"
                           placeholder="010"
+                          @keydown.enter.prevent="nextTelInput"
+                          @keyup="limitNumber"
                         />
                         <div class="num-input-connector">
                           <font-awesome-icon :icon="['fas', 'minus']"></font-awesome-icon>
                         </div>
                         <input
                           type="number"
-                          id="join_tel"
-                          name="join_tel"
+                          name="tel_second"
                           class="num-input"
                           v-model="formData.joinTel.second"
                           placeholder="0000"
+                          @keydown.enter.prevent="nextTelInput"
+                          @keyup="limitNumber"
                         />
                         <div class="num-input-connector">
                           <font-awesome-icon :icon="['fas', 'minus']"></font-awesome-icon>
                         </div>
                         <input
                           type="number"
-                          id="join_tel"
-                          name="join_tel"
+                          name="tel_third"
                           class="num-input"
                           v-model="formData.joinTel.third"
                           placeholder="0000"
+                          @keydown.enter.prevent="onSubmitForm"
+                          @keyup="limitNumber"
                         />
                       </div>
                     </div>
@@ -154,7 +189,9 @@
 
                 <div class="form-row">
                   <div class="form-item">
-                    <button class="form-btn" @click.prevent="onChangeTheme">회원가입하기</button>
+                    <button type="submit" class="form-btn" @click.prevent="onSubmitForm">
+                      회원가입하기
+                    </button>
                   </div>
                 </div>
 
@@ -173,14 +210,18 @@
 </template>
 
 <script>
+import router from "../routes/routes";
+import axios from "axios";
+
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { faComment, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faMinus, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { library as faLibrary } from "@fortawesome/fontawesome-svg-core";
 
-faLibrary.add(faGoogle, faComment, faMinus);
+faLibrary.add(faGoogle, faComment, faMinus, faExclamationCircle);
 
 export default {
+  router,
   data() {
     return {
       themeMode: this.$store.state.theme,
@@ -194,6 +235,12 @@ export default {
           second: "",
           third: "",
         },
+      },
+      errors: {
+        joinId: "",
+        joinPw: "",
+        joinPwChk: "",
+        joinName: "",
       },
     };
   },
@@ -213,10 +260,137 @@ export default {
     nextInput() {
       event.target.parentElement.parentElement.parentElement.nextElementSibling.children[0].children[0].children[1].focus();
     },
+    telInput() {
+      event.target.parentElement.parentElement.parentElement.nextElementSibling.children[0].children[0].children[1].children[0].focus();
+    },
+    nextTelInput() {
+      event.target.nextElementSibling.nextElementSibling.focus();
+    },
+    limitNumber() {
+      if ((event.target.name == "tel_first") & (event.target.value.length == 3)) {
+        this.nextTelInput();
+      }
+      if ((event.target.name == "tel_first") & (event.target.value.length > 3)) {
+        event.target.value = event.target.value.slice(0, 3);
+        this.formData.joinTel.first = event.target.value;
+      }
+      if ((event.target.name == "tel_second") & (event.target.value.length == 4)) {
+        this.nextTelInput();
+      }
+      if ((event.target.name == "tel_second") & (event.target.value.length > 4)) {
+        event.target.value = event.target.value.slice(0, 4);
+        this.formData.joinTel.second = event.target.value;
+      }
+      if ((event.target.name == "tel_third") & (event.target.value.length > 4)) {
+        event.target.value = event.target.value.slice(0, 4);
+        this.formData.joinTel.third = event.target.value;
+      }
+    },
+    checkRequired() {
+      for (const item in this.formData) {
+        try {
+          if (!this.formData[item]) {
+            throw "빈 칸을 채워주세요";
+          }
+        } catch (error) {
+          this.errors[item] = error;
+        }
+      }
+    },
+    checkId() {
+      const pattern_joinId = /^[a-zA-Z가-힣0-9]{4,20}$/;
+      try {
+        if (!pattern_joinId.test(this.formData.joinId)) {
+          throw "한글, 영어, 숫자로만 이루어진 4~20글자로 입력해주세요";
+        } else {
+          console.log("test :>> ");
+          this.errors.joinId = "";
+        }
+      } catch (error) {
+        this.errors.joinId = error;
+      }
+    },
+    checkPassword() {
+      const pattern_joinPw = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,}$/;
+
+      try {
+        if (!pattern_joinPw.test(this.formData.joinPw))
+          throw "영어, 숫자를 혼용해 8자 이상으로 입력해주세요 (!@$%*& 사용가능)";
+        else this.errors.joinPw = "";
+      } catch (error) {
+        this.errors.joinPw = error;
+      }
+    },
+    checkPasswordCheck() {
+      try {
+        if (this.formData.joinPw !== this.formData.joinPwChk) {
+          throw "패스워드를 확인해주세요";
+        } else {
+          this.errors.joinPwChk = "";
+        }
+      } catch (error) {
+        this.errors.joinPwChk = error;
+      }
+    },
+    checkName() {
+      const pattern_joinName = /^[a-zA-Z가-힣]{2,15}$/;
+      try {
+        if (!pattern_joinName.test(this.formData.joinName))
+          throw "한글 혹은 영어로만 이루어진 2~15글자로 입력해주세요";
+        else this.errors.joinName = "";
+      } catch (error) {
+        this.errors.joinName = error;
+      }
+    },
+    validate() {
+      this.checkRequired();
+      this.checkId();
+      this.checkPassword();
+      this.checkPasswordCheck();
+      this.checkName();
+    },
+    onSubmitForm(e) {
+      e.preventDefault();
+
+      this.validate();
+
+      if (
+        !this.errors.joinId &&
+        !this.errors.joinPw &&
+        !this.errors.joinPwChk &&
+        !this.errors.joinName
+      ) {
+        const path = "http://localhost:8000/account/join/";
+        const payload = {
+          id: this.formData.joinId,
+          pw: this.formData.joinPw,
+          username: this.formData.joinName,
+          tel:
+            this.formData.joinTel.first +
+            this.formData.joinTel.second +
+            this.formData.joinTel.third,
+        };
+        console.log("payload :>> ", payload);
+        axios
+          .post(path, payload)
+          .then((res) => {
+            if (res.data.error) {
+              console.log("res.data.error :>> ", res.data.error);
+            } else {
+              router.push({ name: "login" });
+            }
+          })
+          .catch((error) => {
+            console.log("error :>> ", error);
+          });
+      } else {
+      }
+    },
+
     onChangeTheme() {
       this.$store.commit("SETSTYLE", "theme-dark");
       this.themeMode = this.$store.state.theme;
-      this.$router.push();
+      router.push({ name: "join" });
     },
   },
 };
@@ -410,6 +584,53 @@ export default {
                     -moz-appearance: textfield;
                   }
                 }
+
+                .join-warning {
+                  position: absolute;
+                  height: 43px;
+                  width: 43px;
+                  box-sizing: border-box;
+                  top: 0;
+                  right: 0;
+                  font-size: 20px;
+                  color: map-get($map: $theme, $key: "error");
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  cursor: pointer;
+
+                  &:hover .warning-bubble {
+                    display: block;
+                  }
+
+                  .warning-bubble {
+                    position: absolute;
+                    top: -35px;
+                    background: map-get($map: $theme, $key: "color3");
+                    border-radius: 10px;
+                    font-size: 15px;
+                    padding: 10px 12px;
+                    white-space: nowrap;
+                    color: map-get($map: $theme, $key: "font");
+                    display: none;
+
+                    &::after {
+                      content: "";
+                      position: absolute;
+                      bottom: 0;
+                      right: 50%;
+                      left: 50%;
+                      width: 0;
+                      height: 0;
+                      border: 10px solid transparent;
+                      border-top-color: map-get($map: $theme, $key: "color3");
+                      border-bottom: 0;
+                      margin-left: -10px;
+                      margin-bottom: -10px;
+                    }
+                  }
+                }
+
                 .num-input-wrapper {
                   display: flex;
                   justify-content: space-between;
