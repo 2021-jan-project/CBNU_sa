@@ -17,14 +17,19 @@ enhanceAccessToken();
 export default new Vuex.Store({
   state: {
     theme: "theme-light",
+    sidebar: "sidebar-closed",
     accessToken: null,
   },
   getters: {
     theme: (state) => state.theme,
+    sidebar: (state) => state.sidebar,
   },
   mutations: {
     SETSTYLE(state, mode) {
       state.theme = mode;
+    },
+    SETSIDEBARWIDTH(state, opened) {
+      state.sidebar = opened;
     },
     LOGIN(state, { accessToken }) {
       state.accessToken = accessToken;
@@ -36,6 +41,9 @@ export default new Vuex.Store({
   actions: {
     SETSTYLE({ commit }) {
       commit("SETSTYLE");
+    },
+    SETSIDEBARWIDTH({ commit }) {
+      commit("SETSIDEBARWIDTH");
     },
     LOGIN({ commit }, { id, pw }) {
       return axios.post(`${resourceHost}/account/join`, { id, pw }).then(({ data }) => {

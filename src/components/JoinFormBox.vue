@@ -386,12 +386,6 @@ export default {
       } else {
       }
     },
-
-    onChangeTheme() {
-      this.$store.commit("SETSTYLE", "theme-dark");
-      this.themeMode = this.$store.state.theme;
-      router.push({ name: "join" });
-    },
   },
 };
 </script>
@@ -680,7 +674,7 @@ export default {
                 padding: 0 20px;
                 width: 100%;
                 height: 50px;
-                background-color: map-get($theme, "color2");
+                background-color: map-get($theme, "color1");
                 outline: none;
                 border-radius: 12px;
                 box-shadow: 0 10px 30px 0px rgba(0, 0, 0, 0.1);
@@ -689,21 +683,21 @@ export default {
                 cursor: pointer;
 
                 &:hover {
-                  background-color: map-get($theme, "font");
-                  color: map-get($theme, "content-bg");
+                  background-color: map-get($theme, "color1");
+                  color: map-get($theme, "font2");
                   box-shadow: 0 10px 30px 0px rgba(0, 0, 0, 0.5);
                 }
               }
 
               .form-switch {
                 font-size: 0.8rem;
-                color: map-get($theme, "color1");
+                color: map-get($theme, "font");
                 cursor: pointer;
                 text-decoration: underline;
                 transition: all 0.3s;
 
                 &:hover {
-                  color: map-get($theme, "font");
+                  color: map-get($theme, "color1");
                 }
               }
             }

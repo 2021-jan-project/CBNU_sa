@@ -1,8 +1,8 @@
 <template>
-  <div style="margin:0; height:100%;display:flex;" :class="themeMode">
+  <div style="margin:0; height:100%;display:flex;" :class="[getTheme, getSidebar]">
     <side-bar></side-bar>
-    <div style="display:flex; flex-direction:column;width:100%; ">
-      <header-nav></header-nav>
+    <header-nav></header-nav>
+    <div class="content">
       <login-form-box></login-form-box>
     </div>
   </div>
@@ -15,14 +15,20 @@ import LoginFormBox from "../components/LoginFormBox";
 
 export default {
   data() {
-    return {
-      themeMode: this.$store.state.theme,
-    };
+    return {};
   },
   components: {
     HeaderNav,
     SideBar,
     LoginFormBox,
+  },
+  computed: {
+    getTheme() {
+      return this.$store.state.theme;
+    },
+    getSidebar() {
+      return this.$store.state.sidebar;
+    },
   },
 };
 </script>
@@ -30,12 +36,23 @@ export default {
 <style lang="scss" scoped>
 @each $theme in $themes {
   &.#{map-get($theme, "name")} {
-    width: 100%;
-    margin: 0;
-    background-color: map-get($map: $theme, $key: "background");
-    margin: 0;
-    font-family: "Noto Serif KR" serif;
-    color: map-get($map: $theme, $key: "font");
+    @each $sidebar in $sidebars {
+      &.#{map-get($sidebar, "name")} {
+        width: 100%;
+        margin: 0;
+        background-color: map-get($map: $theme, $key: "background");
+        margin: 0;
+        font-family: "Noto Serif KR" serif;
+        color: map-get($map: $theme, $key: "font");
+
+        .content {
+          padding: 7.75rem 2rem 0;
+          position: relative;
+          margin-left: map-get($map: $sidebar, $key: "width");
+          transition: 0.3s margin-left ease;
+        }
+      }
+    }
   }
 }
 </style>
