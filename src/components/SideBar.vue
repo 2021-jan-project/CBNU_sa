@@ -9,10 +9,10 @@
       <div class="sidebar-header">
         <ul>
           <li>
-            <a href="#" class="sidebar-brand">
+            <router-link to="/" tag="a" class="sidebar-brand">
               <span class="brand-logo"><img src="../assets/logo.png" alt="logo"/></span>
               <h2 class="brand-text">Homepage</h2>
-            </a>
+            </router-link>
           </li>
           <li>
             <a href="#" class="sidebar-toggle" :class="{ active: isActive }">
@@ -31,25 +31,25 @@
             <span>Boards</span>
           </li>
           <li class="nav-item">
-            <a href="#">
+            <router-link to="/board/notice" tag="a">
               <font-awesome-icon :icon="['fas', 'bullhorn']" class="bar-icon"></font-awesome-icon>
               <span v-if="isActive || isHovered" class="menu-title">공지사항</span>
-            </a>
+            </router-link>
           </li>
           <li class="nav-item">
-            <a href="#">
+            <router-link to="/board/free" tag="a">
               <font-awesome-icon
                 :icon="['fas', 'clipboard-list']"
                 class="bar-icon"
               ></font-awesome-icon>
               <span v-if="isActive || isHovered" class="menu-title">자유 게시판</span>
-            </a>
+            </router-link>
           </li>
           <li class="nav-item">
-            <a href="#">
+            <router-link to="/board/photo" tag="a">
               <font-awesome-icon :icon="['far', 'image']" class="bar-icon"></font-awesome-icon>
               <span v-if="isActive || isHovered" class="menu-title">사진 게시판</span>
-            </a>
+            </router-link>
           </li>
         </ul>
       </ul>
@@ -123,6 +123,7 @@ export default {
           display: table-cell;
           overflow: hidden;
           transition: 0.3s width ease;
+          user-select: none;
 
           &:hover {
             transition: 0.3s width ease;

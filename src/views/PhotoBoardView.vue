@@ -6,7 +6,7 @@
     <side-bar></side-bar>
     <header-nav></header-nav>
     <div class="content">
-      <join-form-box></join-form-box>
+      <list-table></list-table>
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 <script>
 import SideBar from "../components/SideBar";
 import HeaderNav from "../components/HeaderNav";
-import JoinFormBox from "../components/JoinFormBox";
+import ListTable from "../components/ListTable";
 
 export default {
   data() {
@@ -23,7 +23,7 @@ export default {
   components: {
     HeaderNav,
     SideBar,
-    JoinFormBox,
+    ListTable,
   },
   computed: {
     getTheme() {

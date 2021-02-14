@@ -6,24 +6,23 @@
     <side-bar></side-bar>
     <header-nav></header-nav>
     <div class="content">
-      <join-form-box></join-form-box>
+      <div class="header-shadow"></div>
+
+      <list-table></list-table>
     </div>
   </div>
 </template>
 
 <script>
-import SideBar from "../components/SideBar";
 import HeaderNav from "../components/HeaderNav";
-import JoinFormBox from "../components/JoinFormBox";
+import SideBar from "../components/SideBar";
+import ListTable from "../components/ListTable";
 
 export default {
-  data() {
-    return {};
-  },
   components: {
     HeaderNav,
     SideBar,
-    JoinFormBox,
+    ListTable,
   },
   computed: {
     getTheme() {
@@ -54,6 +53,21 @@ export default {
           margin-left: calc(#{map-get($map: $sidebar, $key: "width")} + 5px);
           transition: 0.3s margin-left ease;
           width: 100%;
+
+          .header-shadow {
+            width: 100%;
+            height: 100px;
+            display: block;
+            top: 0;
+            z-index: 11;
+            position: fixed;
+            background: linear-gradient(
+              180deg,
+              transparentize(map-get($map: $theme, $key: "background"), 0),
+              transparentize(map-get($map: $theme, $key: "background"), 0.2),
+              transparentize(map-get($map: $theme, $key: "background"), 1)
+            );
+          }
         }
       }
     }

@@ -131,7 +131,6 @@ body {
   margin: 0;
   height: 100%;
   width: 100%;
-  overflow: overlay;
 }
 
 a,
@@ -140,37 +139,4 @@ a:focus,
 a:active {
   text-decoration: none !important;
   text-decoration-color: none !important;
-}
-
-::-webkit-scrollbar {
-  width: fit-content;
-  height: auto;
-  background: transparent;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-  box-shadow: none;
-}
-
-::-webkit-scrollbar-track-piece {
-  background: transparent;
-  display: none;
-}
-::-webkit-scrollbar-track-piece:hover {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-::-webkit-scrollbar-corner,
-::-webkit-scrollbar-button {
-  display: none;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.8);
 }

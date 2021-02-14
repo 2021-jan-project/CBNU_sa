@@ -31,6 +31,10 @@ $theme-light: (
   "error": #ed4337,
   "emphasize1": #ea5455,
   "emphasize2": #fe965f,
+  "border": rgb(216, 214, 222),
+  "table": #f3f2f7,
+  "text-muted": #b9b9c3,
+  "table-border": #ebe9f1,
 );
 
 $theme-dark: (
@@ -46,6 +50,10 @@ $theme-dark: (
   "error": #ed4337,
   "emphasize1": #ea5455,
   "emphasize2": #fe965f,
+  "border": rgb(64, 70, 86),
+  "table": #343d55,
+  "text-muted": #676d7d,
+  "table-border": #3b4253,
 );
 
 $sidebar-opended: (
