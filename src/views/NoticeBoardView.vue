@@ -1,20 +1,19 @@
 <template>
-  <div
-    style="margin: 0; height: 100%; display: flex; overflow-x:hidden"
-    :class="[getTheme, getSidebar]"
-  >
-    <side-bar></side-bar>
+  <div style="margin: 0; " :class="[getTheme, getSidebar]">
     <header-nav></header-nav>
+    <side-bar></side-bar>
     <div class="content">
-      <login-form-box></login-form-box>
+      <notice-list></notice-list>
     </div>
+    <footer-nav></footer-nav>
   </div>
 </template>
 
 <script>
 import HeaderNav from "../components/HeaderNav";
 import SideBar from "../components/SideBar";
-import LoginFormBox from "../components/LoginFormBox";
+import NoticeList from "../components/NoticeList";
+import FooterNav from "../components/FooterNav";
 
 export default {
   data() {
@@ -23,7 +22,8 @@ export default {
   components: {
     HeaderNav,
     SideBar,
-    LoginFormBox,
+    NoticeList,
+    FooterNav,
   },
   computed: {
     getTheme() {
@@ -47,13 +47,13 @@ export default {
         margin: 0;
         font-family: "Noto Serif KR" serif;
         color: map-get($map: $theme, $key: "font");
+        min-height: 100%;
 
         .content {
-          padding: 7.75rem 2rem 0;
+          padding: 7.75rem 2.1rem 0;
           position: relative;
           margin-left: calc(#{map-get($map: $sidebar, $key: "width")} + 5px);
           transition: 0.3s margin-left ease;
-          width: 100%;
         }
       }
     }

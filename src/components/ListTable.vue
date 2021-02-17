@@ -396,6 +396,11 @@ export default {
                   border-radius: 0.358rem;
                   outline: none;
                   background-color: transparent;
+
+                  option {
+                    background-color: map-get($map: $theme, $key: "content-bg");
+                    color: map-get($map: $theme, $key: "font-light");
+                  }
                 }
               }
               .content-right {

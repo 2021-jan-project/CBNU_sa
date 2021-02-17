@@ -1,65 +1,64 @@
 <template>
-  <div>
-    <div class="header">
-      <div class="header-container">
-        <div class="bookmark-wrapper">
-          <ul class="header-nav">
-            <li class="nav-item">
-              <a href="#">
-                <font-awesome-icon :icon="['far', 'calendar']"></font-awesome-icon>
-                <div class="hover-bubble">Calendar</div>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="#">
-                <font-awesome-icon :icon="['far', 'comment-alt']"></font-awesome-icon>
-                <div class="hover-bubble">Chat</div>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="#">
-                <font-awesome-icon :icon="['far', 'envelope']"></font-awesome-icon>
-                <div class="hover-bubble">Email</div>
-              </a>
-            </li>
-          </ul>
-        </div>
+  <div class="header">
+    <div class="header-container">
+      <div class="bookmark-wrapper">
         <ul class="header-nav">
           <li class="nav-item">
-            <a href="#"><font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon> </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" @click="onChangeTheme"
-              ><font-awesome-icon :icon="['fas', 'palette']"></font-awesome-icon>
-              <div class="hover-bubble">Theme Color</div>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#"
-              ><font-awesome-icon :icon="['far', 'bell']"></font-awesome-icon>
-              <span class="alert-badge"></span>
+            <a href="#">
+              <font-awesome-icon :icon="['far', 'calendar']"></font-awesome-icon>
+              <div class="hover-bubble">Calendar</div>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="#">
-              <div class="user-status">
-                <p class="user-name">Torry Han</p>
-                <span class="user-grade">admin</span>
-              </div>
-              <span class="avatar">
-                <span class="avatar-img">
-                  <img src="../images/user-default.png" alt="avatar" />
-                </span>
-                <span class="avatar-badge"> </span>
-              </span>
+              <font-awesome-icon :icon="['far', 'comment-alt']"></font-awesome-icon>
+              <div class="hover-bubble">Chat</div>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#">
+              <font-awesome-icon :icon="['far', 'envelope']"></font-awesome-icon>
+              <div class="hover-bubble">Email</div>
             </a>
           </li>
         </ul>
       </div>
+      <ul class="header-nav">
+        <li class="nav-item">
+          <a href="#"><font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon> </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" @click="onChangeTheme"
+            ><font-awesome-icon :icon="['fas', 'palette']"></font-awesome-icon>
+            <div class="hover-bubble">Theme Color</div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#"
+            ><font-awesome-icon :icon="['far', 'bell']"></font-awesome-icon>
+            <span class="alert-badge"></span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#">
+            <div class="user-status">
+              <p class="user-name">Torry Han</p>
+              <span class="user-grade">admin</span>
+            </div>
+            <span class="avatar">
+              <span class="avatar-img">
+                <img src="../images/user-default.png" alt="avatar" />
+              </span>
+              <span class="avatar-badge"> </span>
+            </span>
+          </a>
+        </li>
+      </ul>
     </div>
+    <div class="header-shadow"></div>
   </div>
 </template>
 
@@ -116,7 +115,7 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
-          z-index: 99;
+          z-index: 10;
           margin: 1.3rem 2rem 0;
           padding: 0;
           box-shadow: $shadow2;
@@ -135,6 +134,10 @@ export default {
             display: flex;
             box-sizing: border-box;
             height: $header-height;
+            z-index: 12;
+            box-shadow: $shadow2;
+            background-color: map-get($map: $theme, $key: "content-bg");
+            border-radius: 0.428rem;
 
             .bookmark-wrapper {
               display: flex;
@@ -282,6 +285,21 @@ export default {
                 }
               }
             }
+          }
+
+          .header-shadow {
+            width: calc(100% - 4.4rem - #{map-get($map: $sidebar, $key: "width")});
+            height: 100px;
+            display: block;
+            top: 0;
+            z-index: 11;
+            position: fixed;
+            background: linear-gradient(
+              180deg,
+              transparentize(map-get($map: $theme, $key: "background"), 0),
+              transparentize(map-get($map: $theme, $key: "background"), 0.2),
+              transparentize(map-get($map: $theme, $key: "background"), 1)
+            );
           }
         }
       }
