@@ -102,6 +102,9 @@ export default {
       }
     },
   },
+  mounted: function() {
+    this.setSidebarWidth();
+  },
 };
 </script>
 

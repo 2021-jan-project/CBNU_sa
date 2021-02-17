@@ -7,12 +7,41 @@
         </div>
 
         <div class="card-body">
-          <h4 class="card-title">{{ noticeList.title }}</h4>
-          <div class="author">{{ noticeList.author }}</div>
-          <div class="category">{{ noticeList.category }}</div>
-          <div class="content"></div>
+          <h4 class="card-title">
+            <font-awesome-icon
+              style="color:red; margin-right:0.5rem"
+              :icon="['fas', 'bullhorn']"
+            ></font-awesome-icon>
+            {{ noticeList.title }}
+          </h4>
+          <div class="author">
+            <div class="author-profile">
+              <div class="author-img-wrapper">
+                <img src="../images/user-default.png" alt="" class="author-img" />
+              </div>
+            </div>
+            <div class="author-name">
+              <span class="name">{{ noticeList.author }}</span>
+              <span class="date">| {{ noticeList.date }}</span>
+            </div>
+          </div>
+          <div class="content">{{ noticeList.content }}</div>
           <hr class="whitespace" />
-          <div class="card-footer"></div>
+          <div class="card-footer">
+            <div class="footer-left">
+              <div class="footer-item">
+                <font-awesome-icon :icon="['far', 'comment-alt']"></font-awesome-icon>
+                <div class="footer-text">2</div>
+              </div>
+              <div class="footer-item">
+                <font-awesome-icon :icon="['far', 'thumbs-up']"></font-awesome-icon>
+                <div class="footer-text">18</div>
+              </div>
+            </div>
+            <div class="footer-right">
+              <font-awesome-icon :icon="['fas', 'share-alt']"></font-awesome-icon>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -21,10 +50,11 @@
 
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faAngleLeft, faAngleRight, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faCommentAlt, faThumbsUp } from "@fortawesome/fontawesome-free-regular";
+import { faBullhorn, faShareAlt } from "@fortawesome/free-solid-svg-icons";
 import { library as faLibrary } from "@fortawesome/fontawesome-svg-core";
 
-faLibrary.add(faAngleLeft, faAngleRight, faPen);
+faLibrary.add(faCommentAlt, faThumbsUp, faBullhorn, faShareAlt);
 
 export default {
   data() {
@@ -32,7 +62,6 @@ export default {
       noticeLists: [
         {
           title: "[test1] Notice Notice Notice",
-          category: ["web"],
           author: "tester",
           content:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
@@ -42,19 +71,18 @@ export default {
         },
         {
           title: "[test2] This is Notice Title",
-          category: ["web", "ai"],
           author: "tester",
           content:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
           date: "2021-02-17",
           imgUri: "",
         },
         {
-          title: "[test3] lorem ipsum",
-          category: ["web"],
+          title:
+            "[test3] 내린 우는 동경과 벌써 봅니다. 내 소학교 파란 된 추억과 사랑과 프랑시스 멀리 있습니다. 써 계절이 책상을 이국 못 헤일 같이 노루, 덮어 듯합니다. 차 된 나는 별들을 내린 거외다. 애기 아이들의 나는 언덕 새겨지는 이름과, 있습니다. 별 말 풀이 계십니다. 까닭이요, 밤이 잔디가 추억과 토끼, 까닭이요, 이런 듯합니다.",
           author: "tester",
           content:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+            "계절이 하나에 벌레는 것은 소학교 나의 아스라히 잔디가 계십니다. 나는 마디씩 같이 있습니다. 가을 노루, 파란 이런 벌써 이름을 하늘에는 아무 까닭입니다. 멀듯이, 그리고 책상을 계십니다. 별을 까닭이요, 피어나듯이 강아지, 언덕 어머니 다 봅니다. 옥 시인의 이웃 이런 가슴속에 어머니, 거외다. 멀리 하나의 나는 이름을 노새, 계십니다. 다하지 딴은 나는 어머니, 비둘기, 흙으로 때 있습니다. 파란 무덤 릴케 아이들의 지나고 차 걱정도 멀리 있습니다.",
           date: "2021-02-17",
           imgUri:
             "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=968&q=80",
@@ -62,7 +90,6 @@ export default {
         {
           title:
             "[test4] Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita necessitatibus sequi min icing elit. Expedita necessitatib icing elit. Expedita necessitatib",
-          category: ["web", "security"],
           author: "tester",
           content:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
@@ -72,7 +99,6 @@ export default {
         },
         {
           title: "[test5]testtest",
-          category: ["web"],
           author: "tester",
           content:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
@@ -81,7 +107,6 @@ export default {
         },
         {
           title: "[test6] tst",
-          category: ["web"],
           author: "tester",
           content:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
@@ -112,6 +137,7 @@ export default {
 
           .notice-card {
             box-sizing: border-box;
+            box-shadow: $shadow2;
 
             .card-content {
               display: flex;
@@ -122,7 +148,6 @@ export default {
               position: relative;
               border: none;
               margin-bottom: 2rem;
-              box-shadow: 0 4px 24px 0 rbga(34, 41, 47, 0.1);
               background-color: map-get($map: $theme, $key: "content-bg");
               background-clip: border-box;
               border-radius: 0.428rem;
@@ -134,8 +159,12 @@ export default {
                 width: 100%;
                 vertical-align: middle;
                 box-sizing: border-box;
-                max-height: 350px;
+                max-height: 450px;
                 overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
 
                 img {
                   width: 100%;
@@ -147,6 +176,7 @@ export default {
                 padding: 1.5rem;
                 flex: 1 1 auto;
                 box-sizing: border-box;
+                width: 100%;
 
                 .card-title {
                   margin-bottom: 1.5rem;
@@ -155,27 +185,101 @@ export default {
                   color: map-get($map: $theme, $key: "font");
                   line-height: 1.2;
                   box-sizing: border-box;
+                  letter-spacing: 0.02rem;
+                  word-wrap: break-word;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                  cursor: pointer;
+
+                  &:hover {
+                    text-decoration: underline;
+                  }
                 }
 
                 .author {
                   display: flex;
-                  align-items: flex-start;
+                  align-items: center;
                   box-sizing: border-box;
                   color: map-get($map: $theme, $key: "font-light");
-                }
+                  margin-bottom: 1rem;
 
-                .category {
-                  padding: 0 0.25rem;
-                  margin: 0 1rem;
-                  box-sizing: border-box;
+                  .author-profile {
+                    margin-right: 0.5rem;
+                    display: flex;
+                    align-items: center;
+                    box-sizing: border-box;
+
+                    .author-img-wrapper {
+                      width: 24px;
+                      height: 24px;
+                      cursor: pointer;
+                      border: none;
+                      padding: 0;
+                      border-radius: 50%;
+                      display: inline-flex;
+                      align-items: center;
+                      justify-content: center;
+                      vertical-align: middle;
+                      position: relative;
+
+                      .author-img {
+                        width: 100%;
+                        height: 100%;
+                        overflow: hidden;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        box-sizing: border-box;
+                        cursor: pointer;
+                      }
+                    }
+                  }
+
+                  .author-name {
+                    box-sizing: border-box;
+                    flex: 1;
+                    font-size: 0.85rem;
+                    font-weight: 400;
+                    letter-spacing: 0.1rem;
+
+                    .name {
+                      cursor: pointer;
+                      font-size: 1rem;
+
+                      &:hover {
+                        text-decoration: underline;
+                        transition: all 0.3s ease-in-out;
+                      }
+                    }
+
+                    .date {
+                      color: map-get($map: $theme, $key: "text-muted");
+                    }
+                  }
                 }
 
                 .content {
-                  color: map-get($map: $theme, $key: "font-light");
+                  color: map-get($map: $theme, $key: "text-muted");
+                  line-height: 1.3rem;
+                  word-wrap: break-word;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 5;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                  cursor: pointer;
+                  font-weight: 300;
+                  margin-bottom: 1.5rem;
+
+                  &:hover {
+                    color: map-get($map: $theme, $key: "font-light");
+                    transition: all 0.3s ease-in-out;
+                  }
                 }
 
                 .whitespace {
-                  margin: 0 1.5rem;
+                  margin: 1.5rem 0;
                   border: 0;
                   border-top: 1px solid map-get($map: $theme, $key: "table-border");
                 }
@@ -185,6 +289,42 @@ export default {
                   justify-content: space-between;
                   align-items: center;
                   box-sizing: border-box;
+
+                  .footer-left {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-sizing: border-box;
+
+                    .footer-item {
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      box-sizing: border-box;
+                      margin-right: 1.5rem;
+                      cursor: pointer;
+
+                      &:hover {
+                        color: map-get($map: $theme, $key: "color1");
+                      }
+
+                      .footer-text {
+                        margin-left: 0.5rem;
+                      }
+                    }
+                  }
+
+                  .footer-right {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-sizing: border-box;
+                    cursor: pointer;
+
+                    &:hover {
+                      color: map-get($map: $theme, $key: "color1");
+                    }
+                  }
                 }
               }
             }
