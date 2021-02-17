@@ -97,7 +97,11 @@
     <div class="table-footer">
       <div>
         <div class="footer-left">
-          <span>Showing 1 to {{ perPage }} of {{ total }} entries</span>
+          <span
+            >Showing {{ (currentPage - 1) * perPage + 1 }} to
+            {{ currentPage * perPage > total ? total : currentPage * perPage }} of
+            {{ total }} entries</span
+          >
         </div>
         <div class="footer-right">
           <ul role="menubar" aria-label="Pagination">
@@ -312,8 +316,7 @@ export default {
   },
   methods: {
     nextPage() {
-      if (this.maxPage - this.currentPage > 5)
-        this.currentPage = Math.ceil(this.currentPage / 5) * 5 + 1;
+      this.currentPage = Math.ceil(this.currentPage / 5) * 5 + 1;
     },
     prevPage() {
       if (this.currentPage > 5) this.currentPage = Math.ceil(this.currentPage / 5) * 5 - 9;
