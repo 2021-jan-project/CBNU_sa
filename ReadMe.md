@@ -5,7 +5,7 @@ start from 12 Jan 2021
 ## 📝 TODO
 
 - [x] sign in, sign up
-- [ ] text board
+- [x] text board
 - [ ] photo board
 - [ ] video board
 
@@ -25,3 +25,4 @@ npm run dev
 1. scss, vue.js theming
    - study how to handle scss better.
 2. postgresql
+3. frontend pagination
