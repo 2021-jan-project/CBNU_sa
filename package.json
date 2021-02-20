@@ -4,7 +4,7 @@
   "description": "frontend part",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode development --output docs/app.js",
+    "build": "webpack --mode production ",
     "dev": "webpack-dev-server --mode development --hot"
   },
   "author": "",
