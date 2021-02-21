@@ -15,11 +15,15 @@
             </router-link>
           </li>
           <li>
-            <a href="#" class="sidebar-toggle" :class="{ active: isActive }">
+            <a
+              href="#"
+              class="sidebar-toggle"
+              :class="{ active: isActive }"
+              @click="changeSidebarWidth"
+            >
               <font-awesome-icon
                 :icon="['fas', 'thumbtack']"
                 class="toggle-icon"
-                @click="setSidebarWidth"
               ></font-awesome-icon>
             </a>
           </li>
@@ -70,23 +74,36 @@ export default {
   router,
   data() {
     return {
-      opened: "80px",
-      isActive: false,
-      isHovered: false,
+      opened: "",
+      isActive: "",
+      isHovered: "",
     };
   },
   components: {
     FontAwesomeIcon,
   },
   methods: {
-    setSidebarWidth() {
-      const currentSidebar = this.$store.state.sidebar;
+    changeSidebarWidth() {
+      const currentSidebar = this.getSidebar;
+      console.log("currentSidebar :>> ", currentSidebar);
       if (currentSidebar == "sidebar-opened") {
-        this.$store.commit("SETSIDEBARWIDTH", "sidebar-closed");
+        this.closeSidebar;
         this.opened = "80px";
         this.isActive = false;
       } else if (currentSidebar == "sidebar-closed") {
-        this.$store.commit("SETSIDEBARWIDTH", "sidebar-opened");
+        this.openSidebar;
+        this.opened = "260px";
+        this.isActive = true;
+      }
+    },
+    getSidebarWidth() {
+      const currentSidebar = this.getSidebar;
+      if (currentSidebar == "sidebar-closed") {
+        this.closeSidebar;
+        this.opened = "80px";
+        this.isActive = false;
+      } else if (currentSidebar == "sidebar-opened") {
+        this.openSidebar;
         this.opened = "260px";
         this.isActive = true;
       }
@@ -102,8 +119,19 @@ export default {
       }
     },
   },
-  mounted: function() {
-    this.setSidebarWidth();
+  computed: {
+    getSidebar() {
+      return this.$store.state.sidebar;
+    },
+    closeSidebar() {
+      return this.$store.commit("SETSIDEBARWIDTH", "sidebar-closed");
+    },
+    openSidebar() {
+      return this.$store.commit("SETSIDEBARWIDTH", "sidebar-opened");
+    },
+  },
+  created: function() {
+    this.getSidebarWidth();
   },
 };
 </script>

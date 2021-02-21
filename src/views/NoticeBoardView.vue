@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 0; " :class="[getTheme, getSidebar]">
-    <header-nav></header-nav>
     <side-bar></side-bar>
+    <header-nav></header-nav>
     <div class="content">
       <notice-list></notice-list>
     </div>
