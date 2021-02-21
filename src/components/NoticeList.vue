@@ -1,9 +1,9 @@
 <template>
   <div class="card-wrapper">
-    <div class="notice-card" v-for="(noticeList, index) in noticeLists" :key="index">
+    <div class="notice-card" v-for="index in loaded" :key="index">
       <div class="card-content">
-        <div v-if="noticeList.imgUri.length > 0" class="img-wrapper">
-          <img :src="noticeList.imgUri" alt="" />
+        <div v-if="noticeLists[index - 1].imgUri.length > 0" class="img-wrapper">
+          <img :src="noticeLists[index - 1].imgUri" alt="" />
         </div>
 
         <div class="card-body">
@@ -12,7 +12,7 @@
               style="color:red; margin-right:0.5rem"
               :icon="['fas', 'bullhorn']"
             ></font-awesome-icon>
-            {{ noticeList.title }}
+            {{ noticeLists[index - 1].title }}
           </h4>
           <div class="author">
             <div class="author-profile">
@@ -21,11 +21,11 @@
               </div>
             </div>
             <div class="author-name">
-              <span class="name">{{ noticeList.author }}</span>
-              <span class="date">| {{ noticeList.date }}</span>
+              <span class="name">{{ noticeLists[index - 1].author }}</span>
+              <span class="date">| {{ noticeLists[index - 1].date }}</span>
             </div>
           </div>
-          <div class="content">{{ noticeList.content }}</div>
+          <div class="content">{{ noticeLists[index - 1].content }}</div>
           <hr class="whitespace" />
           <div class="card-footer">
             <div class="footer-left">
@@ -45,10 +45,19 @@
         </div>
       </div>
     </div>
+
+    <infinite-loading @infinite="infiniteHandler" spinner="circles">
+      <!-- <div slot="spinner">Loading...</div> -->
+      <div slot="no-results">No results</div>
+      <div slot="no-more"></div>
+      <div slot="error">Error</div>
+    </infinite-loading>
   </div>
 </template>
 
 <script>
+import InfiniteLoading from "vue-infinite-loading";
+
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCommentAlt, faThumbsUp } from "@fortawesome/fontawesome-free-regular";
 import { faBullhorn, faShareAlt } from "@fortawesome/free-solid-svg-icons";
@@ -59,6 +68,8 @@ faLibrary.add(faCommentAlt, faThumbsUp, faBullhorn, faShareAlt);
 export default {
   data() {
     return {
+      page: 1,
+      loaded: 0,
       noticeLists: [
         {
           title: "[test1] Notice Notice Notice",
@@ -113,13 +124,288 @@ export default {
           date: "2021-02-17",
           imgUri: "",
         },
+        {
+          title: "[test7] This is Notice Title",
+          author: "Lorem ipsum dolor sit amet",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test8] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test9] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test10] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test11] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test12] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test13] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test14] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test15] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test16] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test17] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test18] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test19] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test20] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test21] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test22] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test23] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test24] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test25] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test26] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test27] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test28] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test29] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test30] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test31] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test32] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test33] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test34] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test35] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test36] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test37] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
+        {
+          title: "[test38] This is Notice Title",
+          author: "tester",
+          content:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi neque totam, nulla similique consectetur molestias distinctio ea minus rerum eveniet quod voluptates recusandae ipsum cum debitis quos repudiandae libero obcaecati.",
+          date: "2021-02-17",
+          imgUri: "",
+        },
       ],
     };
   },
   components: {
     FontAwesomeIcon,
+    InfiniteLoading,
   },
-  methods: {},
+  methods: {
+    infiniteHandler($state) {
+      const total = this.noticeLists.length;
+
+      if (this.loaded == total) $state.complete();
+      else {
+        setTimeout(() => {
+          if (total - this.loaded > 10) {
+            this.loaded += 10;
+            $state.loaded();
+          } else if (total - this.loaded <= 10) {
+            const leftNum = total - this.loaded;
+            this.loaded += leftNum;
+            $state.loaded();
+          }
+        }, 1000);
+      }
+    },
+  },
   mounted: function() {},
 };
 </script>

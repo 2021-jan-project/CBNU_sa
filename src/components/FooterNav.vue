@@ -17,6 +17,7 @@ export default {};
     @each $sidebar in $sidebars {
       &.#{map-get($sidebar, "name")} {
         margin: 0;
+        user-select: none;
 
         .footer {
           padding: 0.8rem 2.3rem;
@@ -33,6 +34,7 @@ export default {};
             color: map-get($map: $theme, $key: "font-light");
             letter-spacing: 0.1rem;
             font-size: 0.8rem;
+            user-select: none;
 
             .footer-left {
               float: left;

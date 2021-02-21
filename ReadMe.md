@@ -26,3 +26,4 @@ npm run dev
    - study how to handle scss better.
 2. postgresql
 3. frontend pagination
+4. infinite loading (scroll loading)
