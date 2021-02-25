@@ -1,5 +1,5 @@
 <template>
-  <div class="table-card">
+  <div class="table-card" v-if="!writingMode">
     <div class="table-header">
       <div class="header-content">
         <div class="content-left">
@@ -14,7 +14,7 @@
         </div>
         <div class="content-right">
           <input type="text" placeholder="Search..." class="content-form" />
-          <button>
+          <button @click="onWriting">
             <span> <font-awesome-icon :icon="['fas', 'pen']"></font-awesome-icon> 글쓰기</span>
           </button>
         </div>
@@ -214,9 +214,12 @@
       </div>
     </div>
   </div>
+  <writing-form-box v-else boardName="board-free"></writing-form-box>
 </template>
 
 <script>
+import WritingFormBox from "./WritingFormBox";
+
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faAngleLeft, faAngleRight, faPen } from "@fortawesome/free-solid-svg-icons";
 import { library as faLibrary } from "@fortawesome/fontawesome-svg-core";
@@ -309,10 +312,12 @@ export default {
         { title: "test76", author: "tester", date: "2021-02-17" },
         { title: "test77", author: "tester", date: "2021-02-17" },
       ],
+      writingMode: false,
     };
   },
   components: {
     FontAwesomeIcon,
+    WritingFormBox,
   },
   methods: {
     nextPage() {
@@ -327,6 +332,10 @@ export default {
     },
     changePerPage() {
       this.maxPage = Math.ceil(this.total / this.perPage);
+    },
+    onWriting(e) {
+      e.preventDefault();
+      this.writingMode = !this.writingMode;
     },
   },
   mounted: function() {

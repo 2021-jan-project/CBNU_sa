@@ -241,6 +241,7 @@ export default {
                 position: relative;
                 white-space: nowrap;
                 box-sizing: border-box;
+                list-style: none;
 
                 a {
                   align-items: center;

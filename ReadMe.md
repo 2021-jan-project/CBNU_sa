@@ -27,3 +27,5 @@ npm run dev
 2. postgresql
 3. frontend pagination
 4. infinite loading (scroll loading)
+5. tiptap
+   - a renderless rich-text editor for Vue.js
